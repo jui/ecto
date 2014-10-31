@@ -10,18 +10,17 @@ defmodule Ecto.Adapters.Mysql.Worker do
   alias Ecto.Adapters.Mysql.Error
 
   def start(args) do
-      GenServer.start(__MODULE__, args)
-#    :gen_server.start({:global, :mysql_worker_pid}, __MODULE__, args, [])
+    IO.inspect(args)
+    :gen_server.start({:global, :mysql_worker_pid}, __MODULE__, args, [])
   end
 
   def start_link(args) do
-      GenServer.start_link(__MODULE__, args)
-#    :gen_server.start_link({:global, :mysql_worker_pid}, __MODULE__, args, [])
+    IO.inspect(args)
+    :gen_server.start_link({:global, :mysql_worker_pid}, __MODULE__, args, [])
   end
 
   def query!(worker, sql, params, timeout \\ @timeout) do #compare
-    r = handle_query(GenServer.call(worker, {:query, sql, params, timeout}, timeout))
-# r = handle_query(:gen_server.call({:global, :mysql_worker_pid}, { :query, sql, params, timeout }, timeout))
+    r = handle_query(:gen_server.call({:global, :mysql_worker_pid}, { :query, sql, params, timeout }, timeout))
 
     r = case r do
       %Error{msg: msg, query: nil, params: nil} ->
