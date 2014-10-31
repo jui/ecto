@@ -19,7 +19,7 @@ defmodule Ecto.Adapters.Mysql.Worker do
 #    :gen_server.start_link({:global, :mysql_worker_pid}, __MODULE__, args, [])
   end
 
-  def query!(_worker, sql, params, timeout \\ @timeout) do #compare
+  def query!(worker, sql, params, timeout \\ @timeout) do #compare
     r = handle_query(GenServer.call(worker, {:query, sql, params, timeout}, timeout))
 # r = handle_query(:gen_server.call({:global, :mysql_worker_pid}, { :query, sql, params, timeout }, timeout))
 
