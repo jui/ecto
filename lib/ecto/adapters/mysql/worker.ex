@@ -10,6 +10,8 @@ defmodule Ecto.Adapters.Mysql.Worker do
   alias Ecto.Adapters.Mysql.Error
 
   def start(args) do
+    IO.inspect(args[:pool_name])
+
     pid = String.to_atom("mysql_#{args[:database]}_pid")
     GenServer.start(args[:pool_name], args)
 #    :gen_server.start({:global, pid}, __MODULE__, args, [])
@@ -17,12 +19,12 @@ defmodule Ecto.Adapters.Mysql.Worker do
 
   def start_link(args) do
     pid = String.to_atom("mysql_#{args[:database]}_pid")
+    IO.inspect(args[:pool_name])
     GenServer.start(args[:pool_name], args, [])
 #    :gen_server.start_link({:global, pid}, __MODULE__, args, [])
   end
 
   def query!(worker, sql, params, timeout \\ @timeout) do #compare
-    IO.inspect(timeout)
     r = handle_query(:gen_server.call(worker, { :query, sql, params, timeout }, timeout))
 
     r = case r do
