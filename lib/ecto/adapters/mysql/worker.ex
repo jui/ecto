@@ -20,8 +20,7 @@ defmodule Ecto.Adapters.Mysql.Worker do
   end
 
   def query!(worker, sql, params, timeout \\ @timeout) do #compare
-	IO.inspect(worker)
-    r = handle_query(:gen_server.call({:global, :mysql_worker_pid}, { :query, sql, params, timeout }, timeout))
+    r = handle_query(:gen_server.call(worker, { :query, sql, params, timeout }, timeout))
 
     r = case r do
       %Error{msg: msg, query: nil, params: nil} ->
